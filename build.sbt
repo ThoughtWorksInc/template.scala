@@ -8,3 +8,8 @@ addCompilerPlugin("org.scalameta" % "paradise" % "3.0.0-M7" cross CrossVersion.p
 
 libraryDependencies += "org.scalameta" %% "scalameta" % "1.6.0"
 
+crossScalaVersions in ThisBuild := Seq("2.11.8", "2.12.1")
+
+organization in ThisBuild := "com.thoughtworks.whitebox.inline"
+
+name := "inline"
