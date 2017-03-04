@@ -1,4 +1,4 @@
-package com.thoughtworks.whitebox
+package com.thoughtworks
 
 import scala.annotation.StaticAnnotation
 import scala.reflect.macros.{TypecheckException, whitebox}
@@ -6,7 +6,7 @@ import scala.reflect.macros.{TypecheckException, whitebox}
 /**
   * @author 杨博 (Yang Bo) &lt;pop.atry@gmail.com&gt;
   */
-final class inline extends StaticAnnotation {
+final class template extends StaticAnnotation {
 
   inline def apply(method: Any): Any = meta {
     import scala.meta._
@@ -14,7 +14,7 @@ final class inline extends StaticAnnotation {
     method match {
       case Defn.Def(mods, methodName, tparams, paramss, decltpe, body) =>
         for (tparam <- tparams) {
-          abort(tparam.pos, "@whitebox.inline does not support type parameter")
+          abort(tparam.pos, "@template does not support type parameter")
         }
         val expandMethodName = Term.Name(s"expand${paramss.length}")
         val macroArguments = for (i <- paramss.indices) yield {
@@ -22,18 +22,18 @@ final class inline extends StaticAnnotation {
         }
         q"""
           import scala.language.experimental.macros
-          @_root_.com.thoughtworks.whitebox.inline.methodBody(${Lit(method.syntax)})
-          def $methodName(...$macroArguments): _root_.scala.Any = macro _root_.com.thoughtworks.whitebox.inline.Macros.$expandMethodName
+          @_root_.com.thoughtworks.template.methodBody(${Lit(method.syntax)})
+          def $methodName(...$macroArguments): _root_.scala.Any = macro _root_.com.thoughtworks.template.Macros.$expandMethodName
         """
       case _ =>
-        abort("@whitebox.inline must be set on methods")
+        abort("@template must be set on methods")
     }
 
   }
 
 }
 
-object inline {
+object template {
 
   final class methodBody(code: String) extends StaticAnnotation
 

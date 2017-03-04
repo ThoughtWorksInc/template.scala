@@ -1,13 +1,13 @@
-package com.thoughtworks.whitebox
+package com.thoughtworks
 
 import org.scalatest.{FreeSpec, Matchers}
 
 /**
   * @author 杨博 (Yang Bo) &lt;pop.atry@gmail.com&gt;
   */
-final class inlineSpec extends FreeSpec with Matchers {
+final class templateSpec extends FreeSpec with Matchers {
 
-  @inline
+  @template
   def plus(x: Any, y: Int) = x + y
 
   plus(2, 3) should be(5)
@@ -16,7 +16,7 @@ final class inlineSpec extends FreeSpec with Matchers {
   "plus(2, ???)" should compile
   """plus(2, "not a Int")""" shouldNot typeCheck
 
-  @inline
+  @template
   def plus2(x: Any, y: Any): String = x + y
 
   plus2(2, "m") should be("2m")
