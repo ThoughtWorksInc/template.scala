@@ -11,19 +11,24 @@ final class inline extends StaticAnnotation {
   inline def apply(method: Any): Any = meta {
     import scala.meta._
 
-    val Defn.Def(mods, methodName, tparams, paramss, decltpe, body) = method
-    for (tparam <- tparams) {
-      abort(tparam.pos, "@whitebox.inline does not support type parameter")
+    method match {
+      case Defn.Def(mods, methodName, tparams, paramss, decltpe, body) =>
+        for (tparam <- tparams) {
+          abort(tparam.pos, "@whitebox.inline does not support type parameter")
+        }
+        val expandMethodName = Term.Name(s"expand${paramss.length}")
+        val macroArguments = for (i <- paramss.indices) yield {
+          collection.immutable.Seq(param"${Term.Name(s"arguments$i")}: _root_.scala.Any*")
+        }
+        q"""
+          import scala.language.experimental.macros
+          @_root_.com.thoughtworks.whitebox.inline.methodBody(${Lit(method.syntax)})
+          def $methodName(...$macroArguments): _root_.scala.Any = macro _root_.com.thoughtworks.whitebox.inline.Macros.$expandMethodName
+        """
+      case _ =>
+        abort("@whitebox.inline must be set on methods")
     }
-    val expandMethodName = Term.Name(s"expand${paramss.length}")
-    val macroArguments = for (i <- paramss.indices) yield {
-      collection.immutable.Seq(param"${Term.Name(s"arguments$i")}: _root_.scala.Any*")
-    }
-    q"""
-      import scala.language.experimental.macros
-      @_root_.com.thoughtworks.whitebox.inline.methodBody(${Lit(method.syntax)})
-      def $methodName(...$macroArguments): _root_.scala.Any = macro _root_.com.thoughtworks.whitebox.inline.Macros.$expandMethodName
-    """
+
   }
 
 }
