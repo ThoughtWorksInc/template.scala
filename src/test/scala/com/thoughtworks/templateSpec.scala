@@ -15,7 +15,7 @@ final class templateSpec extends FreeSpec with Matchers {
 
   max(1.0, 2.0) should be(2.0)
   max(10, 5) should be(10)
-  max('foo, 'bar)
+
   "max('foo, 'bar)" shouldNot typeCheck
 
 
