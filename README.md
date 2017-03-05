@@ -34,3 +34,47 @@ def max(x: Any, y: Any) = if (x > y) x else y
                                 ^
 ```
 
+## Recursive template functions
+
+Template functions can be recursive, as long as the number of calls are finite and can be determinated at compile-time.
+
+The following code creates a heterogeneous list.
+
+``` scala
+sealed trait HList {
+
+  final def ::(head: Any): head.type :: this.type = {
+    new (head.type :: this.type)(head, this)
+  }
+
+}
+
+case object HNil extends HList
+
+final case class ::[Head, Tail](head: Head, tail: Tail) extends HList {
+  def apply(i: 0): head.type = {
+    head
+  }
+
+  @template
+  def apply(i: Int with Singleton): Any = {
+    tail(i - 1)
+  }
+
+}
+```
+
+Then you can index elements in the HList via template function `apply`.
+
+``` scala
+val hlist = "foo" :: 1 :: false :: HNil
+
+val s: String = hlist(0)
+val i: Int = hlist(1)
+val b: Boolean = hlist(2)
+
+hlist(3) // Compile error
+```
+
+Note the above code need [TypeLevel Scala](http://typelevel.org/scala/) and [`-Yliteral-types`](http://docs.scala-lang.org/sips/pending/42.type.html) flag.
+
