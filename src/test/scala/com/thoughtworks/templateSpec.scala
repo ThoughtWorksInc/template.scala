@@ -1,6 +1,7 @@
 package com.thoughtworks
 
 import org.scalatest.{FreeSpec, Matchers}
+import scala.language.existentials
 
 /**
   * @author 杨博 (Yang Bo) &lt;pop.atry@gmail.com&gt;
