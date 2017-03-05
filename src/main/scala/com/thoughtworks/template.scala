@@ -79,7 +79,7 @@ object template {
                   } else {
                     rhs
                   }
-                  q"""val $argumentName = ${try {
+                  q"""final val $argumentName = ${try {
                     c.typecheck(argument, pt = c.typecheck(tpt, mode = c.TYPEmode).tpe)
                   } catch {
                     case e: TypecheckException =>
@@ -93,7 +93,7 @@ object template {
                   val thisName = TermName(c.freshName("this"))
                   q"""
                     ..$argumentAssignments
-                    val $thisName = $prefix
+                    final val $thisName = $prefix
                     import $thisName._
                     ${thisTransformer.transform(body)}
                   """

@@ -25,4 +25,39 @@ final class templateSpec extends FreeSpec with Matchers {
   // Disable this line because ScalaTest does not support it.
   // "plus2(2, 3)" shouldNot compile
 
+  "HList should index by Int literal" in {
+    import templateSpec._
+    val hlist = "foo" :: 1 :: false :: HNil
+
+    hlist(0) should be("foo")
+    hlist(1) should be(1)
+    hlist(2) should be(false)
+    "hlist(3)" shouldNot typeCheck
+  }
+}
+
+object templateSpec {
+
+  sealed trait HList {
+
+    final def ::(head: Any): head.type :: this.type = {
+      new (head.type :: this.type)(head, this)
+    }
+
+  }
+
+  case object HNil extends HList
+
+  final case class ::[Head, Tail](head: Head, tail: Tail) extends HList {
+    def apply(i: 0): Head = {
+      head
+    }
+
+    @template
+    def apply(i: Int with Singleton): Any = {
+      tail(i - 1)
+    }
+
+  }
+
 }
