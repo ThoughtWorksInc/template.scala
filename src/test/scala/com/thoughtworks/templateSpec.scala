@@ -18,7 +18,6 @@ final class templateSpec extends FreeSpec with Matchers {
 
   "max('foo, 'bar)" shouldNot typeCheck
 
-
   @template
   def plus(x: Any, y: Int with Singleton) = x + y
 
@@ -47,7 +46,7 @@ final class templateSpec extends FreeSpec with Matchers {
     }
 
     "should not compile for Double" in {
-       "plus2(1.0, 3.5)" shouldNot typeCheck
+      "plus2(1.0, 3.5)" shouldNot typeCheck
     }
   }
 
@@ -78,7 +77,7 @@ final class templateSpec extends FreeSpec with Matchers {
         seed += 1
         id
       }
-    } should be ((0, 1))
+    } should be((0, 1))
   }
 }
 object templateSpec {

@@ -61,7 +61,9 @@ object template {
           case Ident(extractor(replacedTo)) =>
             replacedTo
           case Block(defs, value) =>
-            def loop(defs: List[Tree], transformer: CallByNameTransformer, acc: Queue[Tree]): (Transformer, Queue[Tree]) = {
+            def loop(defs: List[Tree],
+                     transformer: CallByNameTransformer,
+                     acc: Queue[Tree]): (Transformer, Queue[Tree]) = {
               defs match {
                 case Nil =>
                   (transformer, acc)
@@ -84,7 +86,8 @@ object template {
 
     }
 
-    final class ThisTransformer(prefix: Tree, callByNames0: Map[TermName, Tree]) extends CallByNameTransformer(callByNames0) {
+    final class ThisTransformer(prefix: Tree, callByNames0: Map[TermName, Tree])
+        extends CallByNameTransformer(callByNames0) {
 
       override def exclude(name: TermName): ThisTransformer = {
         new ThisTransformer(prefix, callByNames - name)
@@ -143,7 +146,8 @@ object template {
                   val (argumentAssignments, callByNameArguments) = pair
                   val (argumentName, tpt, argument) = argumentMappings
                   c.typecheck(tpt, mode = c.TYPEmode) match {
-                    case tq"$callByNameTree[$checkedTypeTree]" if callByNameTree.symbol == definitions.ByNameParamClass =>
+                    case tq"$callByNameTree[$checkedTypeTree]"
+                        if callByNameTree.symbol == definitions.ByNameParamClass =>
                       val checkedValue = try {
                         c.typecheck(argument, pt = checkedTypeTree.tpe)
                       } catch {
@@ -151,7 +155,8 @@ object template {
                           c.error(e.pos.asInstanceOf[Position], e.msg)
                           argument
                       }
-                      (argumentAssignments, callByNameArguments.updated(argumentName.decodedName.toTermName, checkedValue))
+                      (argumentAssignments,
+                       callByNameArguments.updated(argumentName.decodedName.toTermName, checkedValue))
                     case checkedTypeTree =>
                       val checkedValue = try {
                         c.typecheck(argument, pt = checkedTypeTree.tpe)
@@ -225,23 +230,28 @@ object template {
       expand()
     }
 
-    def expand6(arguments0: Tree*)(arguments1: Tree*)(arguments2: Tree*)(arguments3: Tree*)(arguments4: Tree*)(arguments5: Tree*): Tree = {
+    def expand6(arguments0: Tree*)(arguments1: Tree*)(arguments2: Tree*)(arguments3: Tree*)(arguments4: Tree*)(
+        arguments5: Tree*): Tree = {
       expand()
     }
 
-    def expand7(arguments0: Tree*)(arguments1: Tree*)(arguments2: Tree*)(arguments3: Tree*)(arguments4: Tree*)(arguments5: Tree*)(arguments6: Tree*): Tree = {
+    def expand7(arguments0: Tree*)(arguments1: Tree*)(arguments2: Tree*)(arguments3: Tree*)(arguments4: Tree*)(
+        arguments5: Tree*)(arguments6: Tree*): Tree = {
       expand()
     }
 
-    def expand8(arguments0: Tree*)(arguments1: Tree*)(arguments2: Tree*)(arguments3: Tree*)(arguments4: Tree*)(arguments5: Tree*)(arguments6: Tree*)(arguments7: Tree*): Tree = {
+    def expand8(arguments0: Tree*)(arguments1: Tree*)(arguments2: Tree*)(arguments3: Tree*)(arguments4: Tree*)(
+        arguments5: Tree*)(arguments6: Tree*)(arguments7: Tree*): Tree = {
       expand()
     }
 
-    def expand9(arguments0: Tree*)(arguments1: Tree*)(arguments2: Tree*)(arguments3: Tree*)(arguments4: Tree*)(arguments5: Tree*)(arguments6: Tree*)(arguments7: Tree*)(arguments8: Tree*): Tree = {
+    def expand9(arguments0: Tree*)(arguments1: Tree*)(arguments2: Tree*)(arguments3: Tree*)(arguments4: Tree*)(
+        arguments5: Tree*)(arguments6: Tree*)(arguments7: Tree*)(arguments8: Tree*): Tree = {
       expand()
     }
 
-    def expand10(arguments0: Tree*)(arguments1: Tree*)(arguments2: Tree*)(arguments3: Tree*)(arguments4: Tree*)(arguments5: Tree*)(arguments6: Tree*)(arguments7: Tree*)(arguments8: Tree*)(arguments9: Tree*): Tree = {
+    def expand10(arguments0: Tree*)(arguments1: Tree*)(arguments2: Tree*)(arguments3: Tree*)(arguments4: Tree*)(
+        arguments5: Tree*)(arguments6: Tree*)(arguments7: Tree*)(arguments8: Tree*)(arguments9: Tree*): Tree = {
       expand()
     }
   }
