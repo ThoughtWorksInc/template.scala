@@ -9,6 +9,17 @@ import scala.language.existentials
 final class templateSpec extends FreeSpec with Matchers {
 
   @template
+  def max(x: Any, y: Any) = {
+    if (x > y) x else y
+  }
+
+  max(1.0, 2.0) should be(2.0)
+  max(10, 5) should be(10)
+  max('foo, 'bar)
+  "max('foo, 'bar)" shouldNot typeCheck
+
+
+  @template
   def plus(x: Any, y: Int with Singleton) = x + y
 
   plus(2, 3) should be(5)
