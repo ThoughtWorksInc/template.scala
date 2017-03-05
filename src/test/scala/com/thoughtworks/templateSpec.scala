@@ -35,8 +35,7 @@ final class templateSpec extends FreeSpec with Matchers {
     }
 
     "should not compile for Double" in {
-      // Disable this line because ScalaTest does not support it.
-       "plus2(1.0, 3.5)" should compile
+       "plus2(1.0, 3.5)" shouldNot typeCheck
     }
   }
 
@@ -53,6 +52,22 @@ final class templateSpec extends FreeSpec with Matchers {
       "hlist(3)" shouldNot typeCheck
     }
   }
+
+  "call-by-name parameter should be called more than once" in {
+    @template
+    def duplicate(element: => Int): (Int, Int) = {
+      (element, element)
+    }
+
+    {
+      var seed = 0
+      duplicate {
+        val id = seed
+        seed += 1
+        id
+      }
+    } should be ((0, 1))
+  }
 }
 object templateSpec {
 
@@ -67,7 +82,7 @@ object templateSpec {
   case object HNil extends HList
 
   final case class ::[Head, Tail](head: Head, tail: Tail) extends HList {
-    def apply(i: 0): Head = {
+    def apply(i: 0): head.type = {
       head
     }
 
