@@ -42,7 +42,7 @@ object template {
 
     import c.universe._
 
-    class CallByNameTransformer(protected val callByNames: Map[TermName, Tree]) extends Transformer {
+    private[Macros] class CallByNameTransformer(protected val callByNames: Map[TermName, Tree]) extends Transformer {
 
       final class Extractor {
         def unapply(name: TermName) = {
@@ -86,7 +86,7 @@ object template {
 
     }
 
-    final class ThisTransformer(prefix: Tree, callByNames0: Map[TermName, Tree])
+    private[Macros] final class ThisTransformer(prefix: Tree, callByNames0: Map[TermName, Tree])
         extends CallByNameTransformer(callByNames0) {
 
       override def exclude(name: TermName): ThisTransformer = {
