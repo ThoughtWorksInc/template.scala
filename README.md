@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/ThoughtWorksInc/template.scala.svg?branch=master)](https://travis-ci.org/ThoughtWorksInc/template.scala)
 
-**template.scala** is a library for creating template functions, similar to C++ templates.
+**template.scala** is a library for creating inline functions, similar to C++ templates.
 
 ## Usage
 
