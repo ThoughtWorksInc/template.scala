@@ -92,7 +92,7 @@ object templateSpec {
 
   case object HNil extends HList
 
-  final case class ::[Head, Tail](head: Head, tail: Tail) extends HList {
+  final case class ::[Head, Tail <: HList](head: Head, tail: Tail) extends HList {
     def apply(i: 0): head.type = {
       head
     }
