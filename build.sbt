@@ -1,8 +1,6 @@
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.1" % Test
 
-libraryDependencies += scalaOrganization.value % "scala-compiler" % scalaVersion.value % Provided
-
-libraryDependencies += scalaOrganization.value % "scala-reflect" % scalaVersion.value % Provided
+libraryDependencies += scalaOrganization.value % "scala-reflect" % scalaVersion.value
 
 addCompilerPlugin("org.scalameta" % "paradise" % "3.0.0-M7" cross CrossVersion.patch)
 
