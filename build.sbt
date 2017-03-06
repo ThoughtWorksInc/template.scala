@@ -12,6 +12,6 @@ organization in ThisBuild := "com.thoughtworks.template"
 
 name := "template"
 
-scalaOrganization := "org.typelevel"
+scalaOrganization in ThisBuild := "org.typelevel"
 
-scalacOptions += "-Yliteral-types"
+scalacOptions in ThisBuild += "-Yliteral-types"
