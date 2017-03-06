@@ -132,16 +132,6 @@ object template {
                   }
 
                   (argumentName, tpt, argument)
-
-//                  val checkedTypeTree = c.typecheck(tpt, mode = c.TYPEmode)
-//
-//                  (argumentName, tpt, try {
-//                    c.typecheck(argument, pt = checkedTypeTree.tpe)
-//                  } catch {
-//                    case e: TypecheckException =>
-//                      c.error(e.pos.asInstanceOf[Position], e.msg)
-//                      argument
-//                  })
                 }).foldRight[(List[Tree], Map[TermName, Tree])](Nil, Map.empty) { (argumentMappings, pair) =>
                   val (argumentAssignments, callByNameArguments) = pair
                   val (argumentName, tpt, argument) = argumentMappings
