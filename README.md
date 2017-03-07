@@ -90,3 +90,8 @@ hlist(3) // Compile error
 
 Note that the above `HList` code need [TypeLevel Scala](http://typelevel.org/scala/) and [`-Yliteral-types`](http://docs.scala-lang.org/sips/pending/42.type.html) flag.
 
+## Limitations
+
+* `@template` functions always inline, never sharing similar implementations like C++ templates.
+* `@template` functions do not support type parameters.
+* Recursive `@template` functions must be resolved at compile-time.
