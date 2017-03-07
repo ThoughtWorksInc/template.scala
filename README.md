@@ -23,7 +23,7 @@ def max(x: Any, y: Any) = {
 }
 ```
 
-Unlike normal functions, a template function will not be type-checked until using it. Thus it does not raise a type error on `x > y` because the real types of `x` and `y` have not been determinated.
+Unlike normal functions, a template function will not be type-checked until using it. Thus it does not raise a type error on `x > y` because the real types of `x` and `y` have not been determined.
 
 ``` scala
 val i: Int = max(1, 2)
