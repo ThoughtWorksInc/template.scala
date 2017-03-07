@@ -46,7 +46,7 @@ def max(x: Any, y: Any) = if (x > y) x else y
 
 ## Recursive template functions
 
-Template functions can be recursive, as long as the number of calls are finite and can be determinated at compile-time.
+Template functions can be recursive, as long as the number of calls are finite and can be determined at compile-time.
 
 The following code creates a heterogeneous list.
 
