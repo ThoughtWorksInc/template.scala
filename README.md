@@ -13,7 +13,7 @@ scalaVersion := "2.12.1" // or "2.11.8"
 
 libraryDependencies += "com.thoughtworks.template" %% "template" % "latest.release" % Provided
 
-addCompilerPlugin("org.scalameta" % "paradise" % "3.0.0-M7" cross CrossVersion.patch)
+addCompilerPlugin("org.scalameta" % "paradise" % "3.0.0-M7" cross CrossVersion.full)
 ```
 
 A template function is created with a `@template` annotation.
