@@ -46,6 +46,55 @@ def max(x: Any, y: Any) = if (x > y) x else y
                                 ^
 ```
 
+## Side effects
+
+By default, the side effects in arguments of `@template` functions will be evaluated before the execution of the function body. For example:
+
+``` scala
+max({
+  println("x = 1")
+  1
+}, {
+  println("y = 2")
+  2
+})
+```
+
+The output is
+
+``` scala
+x = 1
+y = 2
+```
+
+However, you can use call-by-name parameter to force the side effects re-evaluate whenever the argument is referenced. For example:
+
+
+
+``` scala
+@template
+def callByNameMax(x: => Any, y: => Any) = {
+  if (x > y) x else y
+}
+
+callByNameMax({
+  println("x = 1")
+  1
+}, {
+  println("y = 2")
+  2
+})
+```
+
+The output is
+
+``` scala
+x = 1
+y = 2
+y = 2
+```
+
+
 ## Recursive template functions
 
 Template functions can be recursive, as long as the number of calls are finite and can be determined at compile-time.
