@@ -1,8 +1,9 @@
 package com.thoughtworks
 
 import scala.annotation.StaticAnnotation
-import scala.reflect.macros.{TypecheckException, whitebox}
+import scala.reflect.macros.whitebox
 import scala.collection.immutable.Queue
+import scala.language.experimental.macros
 
 /**
   * @author 杨博 (Yang Bo) &lt;pop.atry@gmail.com&gt;
@@ -36,11 +37,15 @@ final class template extends StaticAnnotation {
 
 object template {
 
+  def the[T](t: T): T = macro Macros.the
+
   final class methodBody(code: String) extends StaticAnnotation
 
   final class Macros(val c: whitebox.Context) {
 
     import c.universe._
+
+    def the(t: Tree): Tree = t
 
     private[Macros] class CallByNameTransformer(protected val callByNames: Map[TermName, Tree]) extends Transformer {
 
@@ -135,61 +140,40 @@ object template {
                 }).foldRight[(List[Tree], Map[TermName, Tree])](Nil, Map.empty) { (argumentMappings, pair) =>
                   val (argumentAssignments, callByNameArguments) = pair
                   val (argumentName, tpt, argument) = argumentMappings
-                  c.typecheck(tpt, mode = c.TYPEmode) match {
-                    case tq"$callByNameTree[$checkedTypeTree]"
-                        if callByNameTree.symbol == definitions.ByNameParamClass =>
-                      val checkedValue = try {
-                        c.typecheck(argument, pt = checkedTypeTree.tpe)
-                      } catch {
-                        case e: TypecheckException =>
-                          c.error(e.pos.asInstanceOf[Position], e.msg)
-                          argument
-                      }
+                  tpt match {
+                    case tq"_root_.scala.${TypeName("<byname>")}[$constrait]" =>
                       (argumentAssignments,
-                       callByNameArguments.updated(argumentName.decodedName.toTermName, checkedValue))
-                    case checkedTypeTree =>
-                      val checkedValue = try {
-                        c.typecheck(argument, pt = checkedTypeTree.tpe)
-                      } catch {
-                        case e: TypecheckException =>
-                          c.error(e.pos.asInstanceOf[Position], e.msg)
-                          argument
-                      }
-                      (q"final val $argumentName = $checkedValue" :: argumentAssignments, callByNameArguments)
+                        callByNameArguments.updated(argumentName.decodedName.toTermName, q"_root_.com.thoughtworks.template.the[$constrait]($argument)"))
+                    case _ =>
+                      (q"final val $argumentName = _root_.com.thoughtworks.template.the[$tpt]($argument)" :: argumentAssignments, callByNameArguments)
                   }
-
                 }
 
-              val inlineTree = methodTree match {
+
+              def checkReturnType(returnTree: Tree): Tree = {
+                if (returnType.isEmpty) {
+                  returnTree
+                } else {
+                  q"_root_.com.thoughtworks.template.the[$returnType]($returnTree)"
+                }
+              }
+              methodTree match {
                 case q"$prefix.$methodName" =>
                   val thisTransformer = new ThisTransformer(prefix, callByNameArguments)
                   val thisName = TermName(c.freshName("this"))
                   q"""
-                    ..$argumentAssignments
                     final val $thisName = $prefix
                     import $thisName._
-                    ${thisTransformer.transform(body)}
+                    ..$argumentAssignments
+                    ${checkReturnType(thisTransformer.transform(body))}
                   """
                 case _ =>
                   val callByNameTransformer = new CallByNameTransformer(callByNameArguments)
                   q"""
                     ..$argumentAssignments
-                    ${callByNameTransformer.transform(body)}
+                    ${checkReturnType(callByNameTransformer.transform(body))}
                   """
               }
-
-              if (returnType.isEmpty) {
-                inlineTree
-              } else {
-                try {
-                  c.typecheck(inlineTree, pt = c.typecheck(returnType, mode = c.TYPEmode).tpe)
-                } catch {
-                  case e: TypecheckException =>
-                    c.error(e.pos.asInstanceOf[Position], e.msg)
-                    inlineTree
-                }
-              }
-
           }
       }
       inlineTree

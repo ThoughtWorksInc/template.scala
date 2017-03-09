@@ -84,7 +84,13 @@ final class templateSpec extends FreeSpec with Matchers {
 
   Point2(1, 3).sumComponents() should be(4)
   Point2(1, 3) + Point2(100, 200) should be(Point2(101, 203))
+  Point2(1, 3) restrictedPlus Point2(100, 200) should be(Point2(101, 203))
+  Point2(1.5, 0.3) + Point2(100, 200) should be(Point2(101.5, 200.3))
+  "Point2(1.5, 0.3) restrictedPlus Point2(100, 200)" shouldNot typeCheck
+  Point2(1.5, 0.3) returnRestrictedPlus Point2(100.0f, 200.0f) should be(Point2(101.5, 200.3))
+  "Point2(100.0f, 200.0f) returnRestrictedPlus Point2(1.5, 0.3)" shouldNot compile
 
+  Point2(Point2(0.1, 0.2), Point2(1.0, 2.0)) + Point2(Point2(10, 20), Point2(100, 200)) should be(Point2(Point2(10.1,20.2),Point2(101.0,202.0)))
 }
 object templateSpec {
 
@@ -111,7 +117,11 @@ object templateSpec {
   }
 
   case class Point2[T](x:T, y:T) {
-    @template def +(rhs: Point2[_]) = Point2(x + rhs.x, y + rhs.y)
+    type A = T
+
+    @template def restrictedPlus(rhs: Point2[A]): Point2[A] = Point2[A](x + rhs.x, y + rhs.y)
+    @template def returnRestrictedPlus(rhs: Point2[_]): Point2[A] = Point2[A](x + rhs.x, y + rhs.y)
+    @template def +(rhs: Point2[_]): Point2[_] = Point2(x + rhs.x, y + rhs.y)
     @template def sumComponents() = x + y
   }
 
