@@ -12,6 +12,8 @@ organization in ThisBuild := "com.thoughtworks.template"
 
 name := "template"
 
+scalaOrganization in updateSbtClassifiers := "org.scala-lang"
+
 scalaOrganization in ThisBuild := "org.typelevel"
 
 scalacOptions in ThisBuild += "-Yliteral-types"
