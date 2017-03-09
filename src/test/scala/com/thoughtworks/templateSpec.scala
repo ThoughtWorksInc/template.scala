@@ -1,6 +1,8 @@
 package com.thoughtworks
 
+import com.thoughtworks.templateSpec.Point2
 import org.scalatest.{FreeSpec, Matchers}
+
 import scala.language.existentials
 
 /**
@@ -79,6 +81,10 @@ final class templateSpec extends FreeSpec with Matchers {
       }
     } should be((0, 1))
   }
+
+  Point2(1, 3).sumComponents() should be(4)
+  Point2(1, 3) + Point2(100, 200) should be(Point2(101, 203))
+
 }
 object templateSpec {
 
@@ -103,5 +109,11 @@ object templateSpec {
     }
 
   }
+
+  case class Point2[T](x:T, y:T) {
+    @template def +(rhs: Point2[_]) = Point2(x + rhs.x, y + rhs.y)
+    @template def sumComponents() = x + y
+  }
+
 
 }
