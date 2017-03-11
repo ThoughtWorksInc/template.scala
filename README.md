@@ -137,7 +137,7 @@ val b: Boolean = hlist(2)
 hlist(3) // Compile error
 ```
 
-Note that the above `HList` code need [TypeLevel Scala](http://typelevel.org/scala/) and [`-Yliteral-types`](http://docs.scala-lang.org/sips/pending/42.type.html) flag.
+Note that the above `HList` example need [TypeLevel Scala](http://typelevel.org/scala/) and [`-Yliteral-types`](http://docs.scala-lang.org/sips/pending/42.type.html) flag.
 
 ## Limitations
 
