@@ -143,12 +143,13 @@ object template {
                   tpt match {
                     case tq"_root_.scala.${TypeName("<byname>")}[$constrait]" =>
                       (argumentAssignments,
-                        callByNameArguments.updated(argumentName.decodedName.toTermName, q"_root_.com.thoughtworks.template.the[$constrait]($argument)"))
+                       callByNameArguments.updated(argumentName.decodedName.toTermName,
+                                                   q"_root_.com.thoughtworks.template.the[$constrait]($argument)"))
                     case _ =>
-                      (q"final val $argumentName = _root_.com.thoughtworks.template.the[$tpt]($argument)" :: argumentAssignments, callByNameArguments)
+                      (q"final val $argumentName = _root_.com.thoughtworks.template.the[$tpt]($argument)" :: argumentAssignments,
+                       callByNameArguments)
                   }
                 }
-
 
               def checkReturnType(returnTree: Tree): Tree = {
                 if (returnType.isEmpty) {
