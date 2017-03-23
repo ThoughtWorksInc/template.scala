@@ -25,7 +25,7 @@ final class template extends StaticAnnotation {
         q"""
           import scala.language.experimental.macros
           @_root_.com.thoughtworks.template.methodBody(${Lit(method.syntax)})
-          def $methodName(...$macroArguments): _root_.scala.Any = macro _root_.com.thoughtworks.template.Macros.$expandMethodName
+          def $methodName(...$macroArguments): ${decltpe.getOrElse(t"_root_.scala.Any")} = macro _root_.com.thoughtworks.template.Macros.$expandMethodName
         """
       case _ =>
         abort("@template must be set on methods")
