@@ -141,6 +141,6 @@ Note that the above `HList` example need [TypeLevel Scala](http://typelevel.org/
 
 ## Limitations
 
-* `@template` functions always inline, never sharing similar implementations like C++ templates.
+* By default, `@template` functions are inline, not sharing similar implementations like C++ templates.
 * `@template` functions do not support type parameters. You can create type aliases instead. See [the test case](https://github.com/ThoughtWorksInc/template.scala/blob/53121bc7dd42de0b933a1b2ef6ac882b4d06c12d/src/test/scala/com/thoughtworks/templateSpec.scala#L120) for example.
 * Recursive `@template` functions must be resolved at compile-time.
